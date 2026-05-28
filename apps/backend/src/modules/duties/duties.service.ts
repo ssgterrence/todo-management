@@ -35,4 +35,15 @@ export class DutiesService {
       throw new Error("Delete failed: delete operation failed");
     }
   }
+  public async editDuty(id: string, dto: IUpdateDutyDTO): Promise<IDuty> {
+    const isExist = await this.sqlHandler.exists(id);
+    if (!isExist) {
+      throw new Error(`Edit failed: cannot find duty with ID ${id}`);
+    }
+    const updatedDuty = await this.sqlHandler.update(id, dto);
+    if (!updatedDuty) {
+      throw new Error("Edit failed: update operation failed");
+    }
+    return updatedDuty;
+  }
 }

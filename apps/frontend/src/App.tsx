@@ -67,6 +67,7 @@ function App() {
             Add
           </Button>
           <AddDutyDialog
+            id={editingId ?? undefined}
             open={editingId !== null}
             title={editingDuty?.title ?? ""}
             onClose={() => setEditingId(null)}

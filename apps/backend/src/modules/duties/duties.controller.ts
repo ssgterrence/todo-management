@@ -56,4 +56,24 @@ export class DutiesController {
       next(error);
     }
   };
+  public editDuty = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const { id } = req.params as { id: string };
+      const { title } = req.body;
+      if (id === undefined) {
+        throw new Error("Validation failed: ID parameter is required");
+      }
+      const updatedDuty = await this.dutiesService.editDuty(id, { title });
+      res.status(200).json({
+        success: true,
+        data: updatedDuty,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
