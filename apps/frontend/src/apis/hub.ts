@@ -1,4 +1,4 @@
-import { CREATE_DUTY_ENDPOINT } from "../config/const";
+import { CREATE_DUTY_ENDPOINT, DELETE_DUTY_ENDPOINT } from "../config/const";
 import { env } from "../config/env";
 
 const createDuty = async (title: string): Promise<void> => {
@@ -16,4 +16,15 @@ const createDuty = async (title: string): Promise<void> => {
   }
 };
 
-export { createDuty };
+const deleteDuty = async (id: string): Promise<void> => {
+  const res = await fetch(`${env.apiUrl}/${DELETE_DUTY_ENDPOINT}/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.error || `Failed to delete duty: ${res.status}`);
+  }
+};
+
+export { createDuty, deleteDuty };

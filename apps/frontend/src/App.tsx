@@ -2,10 +2,16 @@ import { useState } from "react";
 import { useDuties } from "./hooks/useDuties";
 import { Button } from "antd";
 import AddDutyDialog from "./components/AddDutyDialog";
+import { DeleteOutlined } from "@ant-design/icons";
+import { deleteDuty } from "./apis/hub";
 
 function App() {
   const { duties, loading, error, refetch } = useDuties();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const handleDeleteDuty = async (id: string) => {
+    await deleteDuty(id);
+    await refetch();
+  };
   return (
     <div className="flex min-h-screen p-4 items-center justify-center bg-slate-50">
       <div className="w-full max-w-md space-y-4">
@@ -27,7 +33,16 @@ function App() {
                   key={duty.id}
                   className="border-slate-200 border rounded-lg p-3 w-full bg-slate-50 text-slate-700 hover:border-blue-400 transition-colors"
                 >
-                  {duty.title || duty.title}
+                  <div
+                    id="inline-text-container"
+                    className="flex items-center justify-between"
+                  >
+                    <p className="font-medium">{duty.title || duty.title}</p>
+                    <DeleteOutlined
+                      className="text-red-500 cursor-pointer hover:text-red-700 transition-colors"
+                      onClick={() => handleDeleteDuty(duty.id)}
+                    />
+                  </div>
                 </li>
               ))}
             </ul>
