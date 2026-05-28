@@ -42,5 +42,5 @@ export function useDuties() {
     }
   };
 
-  return { duties, loading, error, refetch };
+  return { duties, loading, error, refetch, setDuties };
 }

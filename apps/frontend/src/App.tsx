@@ -1,6 +1,11 @@
+import { useState } from "react";
 import { useDuties } from "./hooks/useDuties";
+import { Button } from "antd";
+import AddDutyDialog from "./components/AddDutyDialog";
+
 function App() {
-  const { duties, loading, error } = useDuties();
+  const { duties, loading, error, refetch } = useDuties();
+  const [dialogOpen, setDialogOpen] = useState(false);
   return (
     <div className="flex min-h-screen p-4 items-center justify-center bg-slate-50">
       <div className="w-full max-w-md space-y-4">
@@ -33,9 +38,14 @@ function App() {
           id="create-duty"
           className="bg-white p-6 rounded-xl shadow-sm border border-slate-100"
         >
-          <h2 className="text-xl font-semibold text-slate-800 mb-2">
-            Add Duty
-          </h2>
+          <Button type="primary" onClick={() => setDialogOpen(true)}>
+            Add
+          </Button>
+          <AddDutyDialog
+            open={dialogOpen}
+            onClose={() => setDialogOpen(false)}
+            onCreated={refetch}
+          />
         </div>
       </div>
     </div>
