@@ -1,16 +1,16 @@
 import { Form, Input, Modal } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createDuty } from "../apis/hub";
 
 type Props = {
+  title?: string;
   open: boolean;
   onClose: () => void;
   onCreated: () => Promise<void>;
 };
-function AddDutyDialog({ open, onClose, onCreated }: Props) {
+function AddDutyDialog({ title, open, onClose, onCreated }: Props) {
   const [form] = Form.useForm<{ title: string }>();
   const [submitting, setSubmitting] = useState(false);
-
   const handleFinish = async (values: { title: string }) => {
     setSubmitting(true);
     try {
@@ -22,12 +22,17 @@ function AddDutyDialog({ open, onClose, onCreated }: Props) {
       setSubmitting(false);
     }
   };
+  useEffect(() => {
+    if (open) {
+      form.setFieldsValue({ title: title ?? "" });
+    }
+  }, [open, title, form]);
   return (
     <Modal
-      title="Add Duty"
+      title={title ? "Edit Duty" : "Add Duty"}
       open={open}
       onCancel={onClose}
-      okText="Added"
+      okText={title ? "Save" : "Add"}
       confirmLoading={submitting}
       onOk={() => form.submit()}
       destroyOnHidden

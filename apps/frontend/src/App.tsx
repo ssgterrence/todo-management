@@ -2,12 +2,14 @@ import { useState } from "react";
 import { useDuties } from "./hooks/useDuties";
 import { Button } from "antd";
 import AddDutyDialog from "./components/AddDutyDialog";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { deleteDuty } from "./apis/hub";
 
 function App() {
   const { duties, loading, error, refetch } = useDuties();
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const editingDuty = duties.find((d) => d.id === editingId) ?? null;
+
   const handleDeleteDuty = async (id: string) => {
     await deleteDuty(id);
     await refetch();
@@ -38,10 +40,18 @@ function App() {
                     className="flex items-center justify-between"
                   >
                     <p className="font-medium">{duty.title || duty.title}</p>
-                    <DeleteOutlined
-                      className="text-red-500 cursor-pointer hover:text-red-700 transition-colors"
-                      onClick={() => handleDeleteDuty(duty.id)}
-                    />
+                    <div className="flex gap-5">
+                      <EditOutlined
+                        className="cursor-pointer hover:text-blue-500 transition-colors"
+                        onClick={() => {
+                          setEditingId(duty.id);
+                        }}
+                      />
+                      <DeleteOutlined
+                        className="cursor-pointer hover:text-red-700 transition-colors"
+                        onClick={() => handleDeleteDuty(duty.id)}
+                      />
+                    </div>
                   </div>
                 </li>
               ))}
@@ -53,12 +63,13 @@ function App() {
           id="create-duty"
           className="bg-white p-6 rounded-xl shadow-sm border border-slate-100"
         >
-          <Button type="primary" onClick={() => setDialogOpen(true)}>
+          <Button type="primary" onClick={() => setEditingId("")}>
             Add
           </Button>
           <AddDutyDialog
-            open={dialogOpen}
-            onClose={() => setDialogOpen(false)}
+            open={editingId !== null}
+            title={editingDuty?.title ?? ""}
+            onClose={() => setEditingId(null)}
             onCreated={refetch}
           />
         </div>

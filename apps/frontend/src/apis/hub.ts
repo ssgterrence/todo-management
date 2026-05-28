@@ -1,4 +1,8 @@
-import { CREATE_DUTY_ENDPOINT, DELETE_DUTY_ENDPOINT } from "../config/const";
+import {
+  CREATE_DUTY_ENDPOINT,
+  DELETE_DUTY_ENDPOINT,
+  EDIT_DUTY_ENDPOINT,
+} from "../config/const";
 import { env } from "../config/env";
 
 const createDuty = async (title: string): Promise<void> => {
@@ -26,5 +30,18 @@ const deleteDuty = async (id: string): Promise<void> => {
     throw new Error(errorData.error || `Failed to delete duty: ${res.status}`);
   }
 };
+const editDuty = async (id: string, title: string): Promise<void> => {
+  const res = await fetch(`${env.apiUrl}/${EDIT_DUTY_ENDPOINT}/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ title }),
+  });
 
-export { createDuty, deleteDuty };
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.error || `Failed to edit duty: ${res.status}`);
+  }
+};
+export { createDuty, deleteDuty, editDuty };
