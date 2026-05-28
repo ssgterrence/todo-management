@@ -5,6 +5,7 @@ const dutiesRoutes = async (): Promise<Router> => {
   const dutiesController = new DutiesController();
   router.get("/list", dutiesController.getAllDuties);
   router.post("/create", dutiesController.createDuty);
+  router.delete("/delete/:id", dutiesController.deleteDuty);
 
   return router;
 };

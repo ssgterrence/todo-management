@@ -37,4 +37,23 @@ export class DutiesController {
       next(error);
     }
   };
+  public deleteDuty = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const { id } = req.params as { id: string };
+      if (id === undefined) {
+        throw new Error("Validation failed: ID parameter is required");
+      }
+      await this.dutiesService.deleteDuty(id);
+      res.status(200).json({
+        success: true,
+        message: `Duty with ID ${id} has been deleted`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

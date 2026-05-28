@@ -25,4 +25,14 @@ export class DutiesService {
     }
     return updatedDuty;
   }
+  public async deleteDuty(id: string): Promise<void> {
+    const isExist = await this.sqlHandler.exists(id);
+    if (!isExist) {
+      throw new Error(`Delete failed: cannot find duty with ID ${id}`);
+    }
+    const isDeleted = await this.sqlHandler.delete(id);
+    if (!isDeleted) {
+      throw new Error("Delete failed: delete operation failed");
+    }
+  }
 }
