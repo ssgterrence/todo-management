@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:17
-    container_name: todo-db
+    container_name: duties-db
     restart: "no"
     environment:
       POSTGRES_USER: ${DB_USER}
@@ -10,8 +10,8 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - todo_pg_data:/var/lib/postgresql/data
+      - duties_pg_data:/var/lib/postgresql/data
       - ./src/db:/docker-entrypoint-initdb.d
 volumes:
-  todo_pg_data:
+  duties_pg_data:
     driver: local
