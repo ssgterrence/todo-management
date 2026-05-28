@@ -2,7 +2,11 @@ import { useState } from "react";
 import { useDuties } from "./hooks/useDuties";
 import { Button } from "antd";
 import AddDutyDialog from "./components/AddDutyDialog";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  ScheduleOutlined,
+} from "@ant-design/icons";
 import { deleteDuty } from "./apis/hub";
 
 function App() {
@@ -21,7 +25,10 @@ function App() {
           id="duties"
           className="bg-white p-6 rounded-xl shadow-sm border border-slate-100"
         >
-          <h1 className="text-2xl font-bold text-slate-800 mb-4">Duty List</h1>
+          <div id="header" className="flex items-center gap-4">
+            <ScheduleOutlined className="text-4xl" />
+            <h1 className=" text-2xl font-bold text-slate-800 ">Duty List</h1>
+          </div>
 
           {loading && (
             <p className="text-slate-400 animate-pulse text-sm">Loading...</p>
