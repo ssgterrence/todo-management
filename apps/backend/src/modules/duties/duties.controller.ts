@@ -1,0 +1,40 @@
+import { Request, Response, NextFunction } from "express";
+import { DutiesService } from "./duties.service.js";
+import { sortAscending } from "../../utils/dto.js";
+
+export class DutiesController {
+  private dutiesService = new DutiesService();
+
+  public getAllDuties = async (
+    _req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const duties = await this.dutiesService.getAllDuties();
+      res.status(200).json({
+        success: true,
+        data: sortAscending(duties),
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public createDuty = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const { title } = req.body;
+      const newDuty = await this.dutiesService.createDuty({ title });
+      res.status(201).json({
+        success: true,
+        data: newDuty,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+}
