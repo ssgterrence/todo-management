@@ -1,4 +1,4 @@
-import { Form, Input, Modal } from "antd";
+import { Form, Input, Modal, message } from "antd";
 import { useEffect, useState } from "react";
 import { createDuty, editDuty } from "../apis/hub";
 
@@ -15,14 +15,14 @@ function AddDutyDialog({ id, title, open, onClose, onCreated }: Props) {
   const handleFinish = async (values: { title: string }) => {
     setSubmitting(true);
     try {
-      if (title && id) {
-        await editDuty(id, values.title);
-      } else {
-        await createDuty(values.title);
-        form.resetFields();
-      }
+      if (id) await editDuty(id, values.title);
+      else await createDuty(values.title);
+      message.success(id ? "Duty updated" : "Duty added");
+      form.resetFields();
       onClose();
       await onCreated();
+    } catch (err) {
+      message.error(err instanceof Error ? err.message : "Request failed");
     } finally {
       setSubmitting(false);
     }
@@ -34,13 +34,13 @@ function AddDutyDialog({ id, title, open, onClose, onCreated }: Props) {
   }, [open, title, form]);
   return (
     <Modal
-      title={title ? "Edit Duty" : "Add Duty"}
+      title={id ? "Edit Duty" : "Add Duty"}
       open={open}
       onCancel={onClose}
-      okText={title ? "Save" : "Add"}
+      okText={id ? "Save" : "Add"}
       confirmLoading={submitting}
       onOk={() => form.submit()}
-      destroyOnHidden
+      destroyOnClose
     >
       <Form form={form} onFinish={handleFinish}>
         <Form.Item
