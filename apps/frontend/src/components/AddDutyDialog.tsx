@@ -40,7 +40,6 @@ function AddDutyDialog({ id, title, open, onClose, onCreated }: Props) {
       okText={id ? "Save" : "Add"}
       confirmLoading={submitting}
       onOk={() => form.submit()}
-      destroyOnClose
     >
       <Form form={form} onFinish={handleFinish}>
         <Form.Item
