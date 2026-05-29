@@ -5,7 +5,7 @@ import { env } from "../config/env";
 
 export function useDuties() {
   const [duties, setDuties] = useState<IDuty[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -26,9 +26,8 @@ export function useDuties() {
 
     fetchDuties();
   }, []);
-  //refresh  case
+
   const refetch = async () => {
-    setLoading(true);
     setError(null);
     try {
       const res = await fetch(`${env.apiUrl}/${GET_DUTIES_ENDPOINT}`);
@@ -37,8 +36,6 @@ export function useDuties() {
       setDuties(data.data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "unknown error");
-    } finally {
-      setLoading(false);
     }
   };
 
