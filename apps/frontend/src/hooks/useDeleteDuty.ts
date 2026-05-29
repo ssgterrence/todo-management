@@ -10,7 +10,7 @@ export function useDeleteDuty(onSuccess: () => Promise<void>) {
       okType: "danger",
       cancelText: "Cancel",
       centered: true,
-      maskClosable: false,
+      mask: { closable: false },
       onOk: async () => {
         try {
           await deleteDuty(id);
