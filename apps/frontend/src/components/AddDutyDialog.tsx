@@ -38,7 +38,7 @@ function AddDutyDialog({ open, onClose, onCreated }: Props) {
       confirmLoading={submitting}
       onOk={() => form.submit()}
       centered
-      maskClosable={false}
+      mask={{ closable: false }}
       width={400}
     >
       <Form form={form} onFinish={handleFinish}>
