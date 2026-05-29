@@ -14,7 +14,7 @@ describe("DutiesService", () => {
 
   const mockDuty: IDuty = {
     id: "1",
-    title: "Test Duty",
+    name: "Test Duty",
     created_at: new Date("2024-01-01"),
     updated_at: new Date("2024-01-01"),
   };
@@ -48,7 +48,7 @@ describe("DutiesService", () => {
 
   describe("createDuty", () => {
     it("should create a new duty successfully", async () => {
-      const createDTO: ICreateDutyDTO = { title: "New Duty" };
+      const createDTO: ICreateDutyDTO = { name: "New Duty" };
       mockSQLHandler.create.mockResolvedValue(mockDuty);
 
       const result = await dutiesService.createDuty(createDTO);
@@ -58,24 +58,24 @@ describe("DutiesService", () => {
       expect(mockSQLHandler.create).toHaveBeenCalledTimes(1);
     });
 
-    it("should throw error when title is missing", async () => {
-      const createDTO: ICreateDutyDTO = { title: "" };
+    it("should throw error when name is missing", async () => {
+      const createDTO: ICreateDutyDTO = { name: "" };
 
       await expect(dutiesService.createDuty(createDTO)).rejects.toThrow(
-        "Validation failed: title is required",
+        "Validation failed: name is required",
       );
       expect(mockSQLHandler.create).not.toHaveBeenCalled();
     });
 
-    it("should log the duty title when creating", async () => {
+    it("should log the duty name when creating", async () => {
       const consoleSpy = jest.spyOn(console, "log").mockImplementation();
-      const createDTO: ICreateDutyDTO = { title: "New Duty" };
+      const createDTO: ICreateDutyDTO = { name: "New Duty" };
       mockSQLHandler.create.mockResolvedValue(mockDuty);
 
       await dutiesService.createDuty(createDTO);
 
       expect(consoleSpy).toHaveBeenCalledWith(
-        "Creating duty with title:",
+        "Creating duty with name:",
         "New Duty",
       );
       consoleSpy.mockRestore();
@@ -84,8 +84,8 @@ describe("DutiesService", () => {
 
   describe("updateDuty", () => {
     it("should update a duty successfully", async () => {
-      const updateDTO: IUpdateDutyDTO = { title: "Updated Duty" };
-      const updatedDuty: IDuty = { ...mockDuty, title: "Updated Duty" };
+      const updateDTO: IUpdateDutyDTO = { name: "Updated Duty" };
+      const updatedDuty: IDuty = { ...mockDuty, name: "Updated Duty" };
 
       mockSQLHandler.exists.mockResolvedValue(true);
       mockSQLHandler.update.mockResolvedValue(updatedDuty);
@@ -98,7 +98,7 @@ describe("DutiesService", () => {
     });
 
     it("should throw error when duty does not exist", async () => {
-      const updateDTO: IUpdateDutyDTO = { title: "Updated Duty" };
+      const updateDTO: IUpdateDutyDTO = { name: "Updated Duty" };
       mockSQLHandler.exists.mockResolvedValue(false);
 
       await expect(dutiesService.updateDuty("999", updateDTO)).rejects.toThrow(
@@ -108,7 +108,7 @@ describe("DutiesService", () => {
     });
 
     it("should throw error when update operation fails", async () => {
-      const updateDTO: IUpdateDutyDTO = { title: "Updated Duty" };
+      const updateDTO: IUpdateDutyDTO = { name: "Updated Duty" };
       mockSQLHandler.exists.mockResolvedValue(true);
       mockSQLHandler.update.mockResolvedValue(null);
 

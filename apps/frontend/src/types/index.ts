@@ -1,7 +1,7 @@
 export interface IDuty {
   id: string;
-  title: string;
+  name: string;
 }
 export interface ICreateDutyDTO {
-  title: string;
+  name: string;
 }

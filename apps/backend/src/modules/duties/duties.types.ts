@@ -1,14 +1,14 @@
 export interface IDuty {
   id: string;
-  title: string;
+  name: string;
   created_at: Date;
   updated_at: Date;
 }
 
 export interface ICreateDutyDTO {
-  title: string;
+  name: string;
 }
 
 export interface IUpdateDutyDTO {
-  title: string;
+  name: string;
 }

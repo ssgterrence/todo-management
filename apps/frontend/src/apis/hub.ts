@@ -5,13 +5,13 @@ import {
 } from "../config/const";
 import { env } from "../config/env";
 
-const createDuty = async (title: string): Promise<void> => {
+const createDuty = async (name: string): Promise<void> => {
   const res = await fetch(`${env.apiUrl}/${CREATE_DUTY_ENDPOINT}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ title }),
+    body: JSON.stringify({ name }),
   });
 
   if (!res.ok) {
@@ -30,13 +30,13 @@ const deleteDuty = async (id: string): Promise<void> => {
     throw new Error(errorData.error || `Failed to delete duty: ${res.status}`);
   }
 };
-const editDuty = async (id: string, title: string): Promise<void> => {
+const editDuty = async (id: string, name: string): Promise<void> => {
   const res = await fetch(`${env.apiUrl}/${EDIT_DUTY_ENDPOINT}/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ title }),
+    body: JSON.stringify({ name }),
   });
 
   if (!res.ok) {

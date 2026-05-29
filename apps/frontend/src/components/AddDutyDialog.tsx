@@ -4,19 +4,19 @@ import { createDuty, editDuty } from "../apis/hub";
 
 type Props = {
   id?: string;
-  title?: string;
+  name?: string;
   open: boolean;
   onClose: () => void;
   onCreated: () => Promise<void>;
 };
-function AddDutyDialog({ id, title, open, onClose, onCreated }: Props) {
-  const [form] = Form.useForm<{ title: string }>();
+function AddDutyDialog({ id, name, open, onClose, onCreated }: Props) {
+  const [form] = Form.useForm<{ name: string }>();
   const [submitting, setSubmitting] = useState(false);
-  const handleFinish = async (values: { title: string }) => {
+  const handleFinish = async (values: { name: string }) => {
     setSubmitting(true);
     try {
-      if (id) await editDuty(id, values.title);
-      else await createDuty(values.title);
+      if (id) await editDuty(id, values.name);
+      else await createDuty(values.name);
       message.success(id ? "Duty updated" : "Duty added");
       form.resetFields();
       onClose();
@@ -29,9 +29,9 @@ function AddDutyDialog({ id, title, open, onClose, onCreated }: Props) {
   };
   useEffect(() => {
     if (open) {
-      form.setFieldsValue({ title: title ?? "" });
+      form.setFieldsValue({ name: name ?? "" });
     }
-  }, [open, title, form]);
+  }, [open, name, form]);
   return (
     <Modal
       title={id ? "Edit Duty" : "Add Duty"}
@@ -43,9 +43,9 @@ function AddDutyDialog({ id, title, open, onClose, onCreated }: Props) {
     >
       <Form form={form} onFinish={handleFinish}>
         <Form.Item
-          name="title"
-          label="Title"
-          rules={[{ required: true, message: "Please input the title" }]}
+          name="name"
+          label="Name"
+          rules={[{ required: true, message: "Please input the name" }]}
         >
           <Input />
         </Form.Item>

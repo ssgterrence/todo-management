@@ -7,10 +7,10 @@ export class DutiesService {
     return await this.sqlHandler.findAll();
   }
   public async createDuty(dto: ICreateDutyDTO): Promise<IDuty> {
-    if (!dto.title) {
-      throw new Error("Validation failed: title is required");
+    if (!dto.name) {
+      throw new Error("Validation failed: name is required");
     }
-    console.log("Creating duty with title:", dto.title);
+    console.log("Creating duty with name:", dto.name);
     return await this.sqlHandler.create(dto);
   }
   public async updateDuty(id: string, dto: IUpdateDutyDTO): Promise<IDuty> {

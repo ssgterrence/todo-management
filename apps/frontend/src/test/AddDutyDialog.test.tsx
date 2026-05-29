@@ -64,7 +64,7 @@ describe("AddDutyDialog", () => {
     render(
       <AddDutyDialog
         id="d1"
-        title="Old"
+        name="Old"
         open={true}
         onClose={onClose}
         onCreated={onCreated}

@@ -14,7 +14,7 @@ describe("DutySQLHandler", () => {
 
   const mockDuty: IDuty = {
     id: "1",
-    title: "Test Duty",
+    name: "Test Duty",
     created_at: new Date("2024-01-01"),
     updated_at: new Date("2024-01-01"),
   };
@@ -88,7 +88,7 @@ describe("DutySQLHandler", () => {
 
   describe("create", () => {
     it("should create a new duty and return it", async () => {
-      const createDTO: ICreateDutyDTO = { title: "New Duty" };
+      const createDTO: ICreateDutyDTO = { name: "New Duty" };
       mockQuery.mockResolvedValue({ rows: [mockDuty] } as any);
 
       const result = await sqlHandler.create(createDTO);
@@ -97,14 +97,14 @@ describe("DutySQLHandler", () => {
       expect(mockQuery).toHaveBeenCalledWith(DutyQueries.CREATE, ["New Duty"]);
     });
 
-    it("should create duty with correct title", async () => {
-      const createDTO: ICreateDutyDTO = { title: "Important Task" };
-      const newDuty: IDuty = { ...mockDuty, title: "Important Task" };
+    it("should create duty with correct name", async () => {
+      const createDTO: ICreateDutyDTO = { name: "Important Task" };
+      const newDuty: IDuty = { ...mockDuty, name: "Important Task" };
       mockQuery.mockResolvedValue({ rows: [newDuty] } as any);
 
       const result = await sqlHandler.create(createDTO);
 
-      expect(result.title).toBe("Important Task");
+      expect(result.name).toBe("Important Task");
       expect(mockQuery).toHaveBeenCalledWith(DutyQueries.CREATE, [
         "Important Task",
       ]);
@@ -113,8 +113,8 @@ describe("DutySQLHandler", () => {
 
   describe("update", () => {
     it("should update a duty and return the updated duty", async () => {
-      const updateDTO: IUpdateDutyDTO = { title: "Updated Duty" };
-      const updatedDuty: IDuty = { ...mockDuty, title: "Updated Duty" };
+      const updateDTO: IUpdateDutyDTO = { name: "Updated Duty" };
+      const updatedDuty: IDuty = { ...mockDuty, name: "Updated Duty" };
       mockQuery.mockResolvedValue({ rows: [updatedDuty] } as any);
 
       const result = await sqlHandler.update("1", updateDTO);
@@ -127,7 +127,7 @@ describe("DutySQLHandler", () => {
     });
 
     it("should return null when duty not found", async () => {
-      const updateDTO: IUpdateDutyDTO = { title: "Updated Duty" };
+      const updateDTO: IUpdateDutyDTO = { name: "Updated Duty" };
       mockQuery.mockResolvedValue({ rows: [] } as any);
 
       const result = await sqlHandler.update("999", updateDTO);

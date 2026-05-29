@@ -15,7 +15,7 @@ describe("DutiesController", () => {
 
   const mockDuty: IDuty = {
     id: "1",
-    title: "Test Duty",
+    name: "Test Duty",
     created_at: new Date("2024-01-01"),
     updated_at: new Date("2024-01-01"),
   };
@@ -79,7 +79,7 @@ describe("DutiesController", () => {
 
   describe("createDuty", () => {
     it("should create a duty successfully", async () => {
-      mockRequest.body = { title: "New Duty" };
+      mockRequest.body = { name: "New Duty" };
       mockService.createDuty.mockResolvedValue(mockDuty);
 
       await dutiesController.createDuty(
@@ -89,7 +89,7 @@ describe("DutiesController", () => {
       );
 
       expect(mockService.createDuty).toHaveBeenCalledWith({
-        title: "New Duty",
+        name: "New Duty",
       });
       expect(mockResponse.status).toHaveBeenCalledWith(201);
       expect(mockResponse.json).toHaveBeenCalledWith({
@@ -99,9 +99,9 @@ describe("DutiesController", () => {
       expect(mockNext).not.toHaveBeenCalled();
     });
 
-    it("should call next with error when title is missing", async () => {
+    it("should call next with error when name is missing", async () => {
       mockRequest.body = {};
-      const error = new Error("Validation failed: title is required");
+      const error = new Error("Validation failed: name is required");
       mockService.createDuty.mockRejectedValue(error);
 
       await dutiesController.createDuty(
@@ -115,7 +115,7 @@ describe("DutiesController", () => {
     });
 
     it("should call next with error when service throws", async () => {
-      mockRequest.body = { title: "New Duty" };
+      mockRequest.body = { name: "New Duty" };
       const error = new Error("Database error");
       mockService.createDuty.mockRejectedValue(error);
 
@@ -183,8 +183,8 @@ describe("DutiesController", () => {
   describe("editDuty", () => {
     it("should edit a duty successfully", async () => {
       mockRequest.params = { id: "1" };
-      mockRequest.body = { title: "Updated Duty" };
-      const updatedDuty: IDuty = { ...mockDuty, title: "Updated Duty" };
+      mockRequest.body = { name: "Updated Duty" };
+      const updatedDuty: IDuty = { ...mockDuty, name: "Updated Duty" };
       mockService.editDuty.mockResolvedValue(updatedDuty);
 
       await dutiesController.editDuty(
@@ -194,7 +194,7 @@ describe("DutiesController", () => {
       );
 
       expect(mockService.editDuty).toHaveBeenCalledWith("1", {
-        title: "Updated Duty",
+        name: "Updated Duty",
       });
       expect(mockResponse.status).toHaveBeenCalledWith(200);
       expect(mockResponse.json).toHaveBeenCalledWith({
@@ -206,7 +206,7 @@ describe("DutiesController", () => {
 
     it("should throw error when ID is undefined", async () => {
       mockRequest.params = {};
-      mockRequest.body = { title: "Updated Duty" };
+      mockRequest.body = { name: "Updated Duty" };
 
       await dutiesController.editDuty(
         mockRequest as Request,
@@ -220,7 +220,7 @@ describe("DutiesController", () => {
 
     it("should call next with error when duty not found", async () => {
       mockRequest.params = { id: "999" };
-      mockRequest.body = { title: "Updated Duty" };
+      mockRequest.body = { name: "Updated Duty" };
       const error = new Error("Edit failed: cannot find duty with ID 999");
       mockService.editDuty.mockRejectedValue(error);
 
@@ -236,7 +236,7 @@ describe("DutiesController", () => {
 
     it("should call next with error when service throws", async () => {
       mockRequest.params = { id: "1" };
-      mockRequest.body = { title: "Updated Duty" };
+      mockRequest.body = { name: "Updated Duty" };
       const error = new Error("Database error");
       mockService.editDuty.mockRejectedValue(error);
 

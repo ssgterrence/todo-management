@@ -32,8 +32,8 @@ describe("useDuties", () => {
 
   it("fetches duties successfully on mount", async () => {
     const mockDuties: IDuty[] = [
-      { id: "1", title: "Test Duty 1" },
-      { id: "2", title: "Test Duty 2" },
+      { id: "1", name: "Test Duty 1" },
+      { id: "2", name: "Test Duty 2" },
     ];
 
     setFetchMock(
@@ -94,10 +94,10 @@ describe("useDuties", () => {
   });
 
   it("refetch updates duties", async () => {
-    const initialDuties: IDuty[] = [{ id: "1", title: "Initial Duty" }];
+    const initialDuties: IDuty[] = [{ id: "1", name: "Initial Duty" }];
     const updatedDuties: IDuty[] = [
-      { id: "1", title: "Initial Duty" },
-      { id: "2", title: "New Duty" },
+      { id: "1", name: "Initial Duty" },
+      { id: "2", name: "New Duty" },
     ];
 
     const fetchMock = jest

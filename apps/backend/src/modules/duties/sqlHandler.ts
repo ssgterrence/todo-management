@@ -19,12 +19,12 @@ export class DutySQLHandler {
   }
 
   async create(duty: ICreateDutyDTO): Promise<IDuty> {
-    const result = await query(DutyQueries.CREATE, [duty.title]);
+    const result = await query(DutyQueries.CREATE, [duty.name]);
     return result.rows[0];
   }
 
   async update(id: string, duty: IUpdateDutyDTO): Promise<IDuty | null> {
-    const result = await query(DutyQueries.UPDATE, [duty.title, id]);
+    const result = await query(DutyQueries.UPDATE, [duty.name, id]);
     return result.rows[0] || null;
   }
 

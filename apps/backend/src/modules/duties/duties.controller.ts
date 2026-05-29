@@ -27,8 +27,8 @@ export class DutiesController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const { title } = req.body;
-      const newDuty = await this.dutiesService.createDuty({ title });
+      const { name } = req.body;
+      const newDuty = await this.dutiesService.createDuty({ name });
       res.status(201).json({
         success: true,
         data: newDuty,
@@ -63,11 +63,11 @@ export class DutiesController {
   ): Promise<void> => {
     try {
       const { id } = req.params as { id: string };
-      const { title } = req.body;
+      const { name } = req.body;
       if (id === undefined) {
         throw new Error("Validation failed: ID parameter is required");
       }
-      const updatedDuty = await this.dutiesService.editDuty(id, { title });
+      const updatedDuty = await this.dutiesService.editDuty(id, { name });
       res.status(200).json({
         success: true,
         data: updatedDuty,

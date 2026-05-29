@@ -70,7 +70,7 @@ function App() {
                         id="inline-text-container"
                         className="flex items-center justify-between"
                       >
-                        <p className="font-medium">{duty.title}</p>
+                        <p className="font-medium">{duty.name}</p>
                         <div className="flex gap-5">
                           <EditOutlined
                             className="cursor-pointer  hover:scale-125 transition-all text-lg"
@@ -102,7 +102,7 @@ function App() {
               editingId && editingId !== ADD_DIALOG_ID ? editingId : undefined
             }
             open={editingId !== null}
-            title={editingDuty?.title ?? ""}
+            name={editingDuty?.name ?? ""}
             onClose={() => setEditingId(null)}
             onCreated={refetch}
           />
