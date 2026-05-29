@@ -1,6 +1,7 @@
-# Duty List Application
+# Duty List
 
-A full-stack duty management application with React, Express, and PostgreSQL.
+Tech stacks:
+React, Express, and PostgreSQL.
 
 ## Prerequisites
 
@@ -48,23 +49,21 @@ A full-stack duty management application with React, Express, and PostgreSQL.
    ```bash
    cd todo-management
    pnpm build
-   pnpm serve (this command will serve frontend & backend at the same time)
+   pnpm serve (this command serve frontend & backend at the same time)
+   ```
+6. **Test the application **
+   ```bash
+   cd frontend
+   pnpm jest
+   ------------
+   cd backend
+   pnpm jest
+   ------------
+   cd todo-management
+   pnpm test :run both test together
    ```
 
 ## Access
 
 - Frontend: http://localhost:5173
-- Backend: http://localhost:4001/v1
-
-## Available Commands
-
-```bash
-pnpm dev          # Run development servers
-pnpm build        # Build for production
-pnpm test         # Run tests
-```
-
-## Stop Application
-
-- `Ctrl+C` to stop dev servers
-- `cd apps/backend && docker-compose down` to stop database
+- Backend baseUrl: http://localhost:4001/v1
