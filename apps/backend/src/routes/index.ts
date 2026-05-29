@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { dutiesRoutes } from "../modules/duties/index.js";
+import { dutiesRoutes } from "../modules/index.js";
 
 export const initCentralRoutes = async (): Promise<Router> => {
   const mainRouter = Router();
