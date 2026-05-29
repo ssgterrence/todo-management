@@ -5,9 +5,10 @@ import { useDeleteDuty } from "./hooks/useDeleteDuty";
 import { Button } from "antd";
 import AddDutyDialog from "./components/AddDutyDialog";
 import DutyList from "./components/DutyList";
+import ErrorPage from "./components/ErrorPage";
 
 function App() {
-  const { duties, loading, error, refetch } = useDuties();
+  const { duties, loading, error, isBackendDown, refetch } = useDuties();
   const [showAddDialog, setShowAddDialog] = useState(false);
 
   const {
@@ -21,6 +22,9 @@ function App() {
   } = useInlineEdit(refetch);
 
   const { confirmDelete } = useDeleteDuty(refetch);
+  if (isBackendDown) {
+    return <ErrorPage onRetry={refetch} />;
+  }
 
   return (
     <div className="flex min-h-screen p-4 items-center justify-center bg-slate-50">
