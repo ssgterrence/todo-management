@@ -10,6 +10,9 @@
     "serve": "vite preview",
     "test": "jest"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "@ant-design/icons": "^6.2.3",
     "@tailwindcss/vite": "^4.3.0",

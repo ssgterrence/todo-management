@@ -14,7 +14,7 @@ A full-stack duty management application with React, Express, and PostgreSQL.
 
    ```bash
    git clone
-   cd interview-task
+   cd todo-management
    pnpm install
    ```
 
@@ -41,12 +41,12 @@ A full-stack duty management application with React, Express, and PostgreSQL.
 
 4. **Run the application**
    ```bash
-   cd interview-task
+   cd todo-management
    pnpm dev
    ```
 5. **serve the application after build**
    ```bash
-   cd interview-task
+   cd todo-management
    pnpm build
    pnpm serve (this command will serve frontend & backend at the same time)
    ```
