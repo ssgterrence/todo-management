@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useDuties } from "./hooks/useDuties";
-import { Button, message } from "antd";
+import { Button, message, Modal } from "antd";
 import AddDutyDialog from "./components/AddDutyDialog";
 import {
   DeleteOutlined,
@@ -18,13 +18,22 @@ function App() {
   const listRef = useRef<HTMLDivElement | null>(null);
 
   const handleDeleteDuty = async (id: string) => {
-    try {
-      await deleteDuty(id);
-      message.success("Duty deleted");
-      await refetch();
-    } catch (err) {
-      message.error(err instanceof Error ? err.message : "Delete failed");
-    }
+    Modal.confirm({
+      title: "Delete Duty",
+      content: "Are you sure you want to delete this duty?",
+      okText: "Delete",
+      okType: "danger",
+      cancelText: "Cancel",
+      onOk: async () => {
+        try {
+          await deleteDuty(id);
+          message.success("Duty deleted");
+          await refetch();
+        } catch (err) {
+          message.error(err instanceof Error ? err.message : "Delete failed");
+        }
+      },
+    });
   };
   return (
     <div className="flex min-h-screen p-4 items-center justify-center bg-slate-50">
@@ -64,11 +73,11 @@ function App() {
                         <p className="font-medium">{duty.title}</p>
                         <div className="flex gap-5">
                           <EditOutlined
-                            className="cursor-pointer hover:text-blue-500 transition-colors"
+                            className="cursor-pointer  hover:scale-125 transition-all text-lg"
                             onClick={() => setEditingId(duty.id)}
                           />
                           <DeleteOutlined
-                            className="cursor-pointer hover:text-red-700 transition-colors"
+                            className="cursor-pointer  hover:scale-125 transition-all text-lg"
                             onClick={() => handleDeleteDuty(duty.id)}
                           />
                         </div>
