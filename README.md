@@ -54,7 +54,7 @@ A full-stack duty management application with React, Express, and PostgreSQL.
 ## Access
 
 - Frontend: http://localhost:5173
-- Backend: http://localhost:4001
+- Backend: http://localhost:4001/v1
 
 ## Available Commands
 
