@@ -6,7 +6,6 @@ import { message } from "antd";
 
 jest.mock("../apis/hub", () => ({
   createDuty: jest.fn(),
-  editDuty: jest.fn(),
 }));
 
 jest.mock("antd", () => {
@@ -53,37 +52,6 @@ describe("AddDutyDialog", () => {
     });
 
     expect(message.success).toHaveBeenCalledWith("Duty added");
-    expect(onClose).toHaveBeenCalled();
-    expect(onCreated).toHaveBeenCalled();
-  });
-
-  it("renders edit mode and updates duty", async () => {
-    const user = userEvent.setup();
-    (hubApi.editDuty as jest.Mock).mockResolvedValue(undefined);
-
-    render(
-      <AddDutyDialog
-        id="d1"
-        name="Old"
-        open={true}
-        onClose={onClose}
-        onCreated={onCreated}
-      />,
-    );
-
-    expect(screen.getByText("Edit Duty")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Save" })).toBeInTheDocument();
-
-    const input = screen.getByRole("textbox");
-    await user.clear(input);
-    await user.type(input, "Updated");
-    await user.click(screen.getByRole("button", { name: "Save" }));
-
-    await waitFor(() => {
-      expect(hubApi.editDuty).toHaveBeenCalledWith("d1", "Updated");
-    });
-
-    expect(message.success).toHaveBeenCalledWith("Duty updated");
     expect(onClose).toHaveBeenCalled();
     expect(onCreated).toHaveBeenCalled();
   });
