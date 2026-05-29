@@ -9,6 +9,8 @@ export function useDeleteDuty(onSuccess: () => Promise<void>) {
       okText: "Delete",
       okType: "danger",
       cancelText: "Cancel",
+      centered: true,
+      maskClosable: false,
       onOk: async () => {
         try {
           await deleteDuty(id);
