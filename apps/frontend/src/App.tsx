@@ -1,20 +1,23 @@
 import { useRef, useState } from "react";
 import { useDuties } from "./hooks/useDuties";
-import { Button, message, Modal } from "antd";
+import { Button, Input, message, Modal } from "antd";
 import AddDutyDialog from "./components/AddDutyDialog";
 import {
+  CheckOutlined,
+  CloseOutlined,
   DeleteOutlined,
   EditOutlined,
   ScheduleOutlined,
 } from "@ant-design/icons";
-import { deleteDuty } from "./apis/hub";
+import { deleteDuty, editDuty } from "./apis/hub";
 
 function App() {
   const { duties, loading, error, refetch } = useDuties();
+  const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const editingDuty = duties.find((d) => d.id === editingId) ?? null;
+  const [editingText, setEditingText] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const ADD_DIALOG_ID = "__add__";
   const listRef = useRef<HTMLDivElement | null>(null);
 
   const handleDeleteDuty = async (id: string) => {
@@ -34,6 +37,36 @@ function App() {
         }
       },
     });
+  };
+
+  const handleEditStart = (id: string, name: string) => {
+    setEditingId(id);
+    setEditingText(name);
+  };
+
+  const handleEditCancel = () => {
+    setEditingId(null);
+    setEditingText("");
+  };
+
+  const handleEditConfirm = async () => {
+    if (!editingId || !editingText.trim()) {
+      message.error("Name cannot be empty");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      await editDuty(editingId, editingText.trim());
+      message.success("Duty updated");
+      await refetch();
+      setEditingId(null);
+      setEditingText("");
+    } catch (err) {
+      message.error(err instanceof Error ? err.message : "Update failed");
+    } finally {
+      setSubmitting(false);
+    }
   };
   return (
     <div className="flex min-h-screen p-4 items-center justify-center bg-slate-50">
@@ -68,19 +101,46 @@ function App() {
                     >
                       <div
                         id="inline-text-container"
-                        className="flex items-center justify-between"
+                        className="flex items-center justify-between gap-2"
                       >
-                        <p className="font-medium">{duty.name}</p>
-                        <div className="flex gap-5">
-                          <EditOutlined
-                            className="cursor-pointer  hover:scale-125 transition-all text-lg"
-                            onClick={() => setEditingId(duty.id)}
-                          />
-                          <DeleteOutlined
-                            className="cursor-pointer  hover:scale-125 transition-all text-lg"
-                            onClick={() => handleDeleteDuty(duty.id)}
-                          />
-                        </div>
+                        {editingId === duty.id ? (
+                          <>
+                            <Input
+                              value={editingText}
+                              onChange={(e) => setEditingText(e.target.value)}
+                              onPressEnter={handleEditConfirm}
+                              disabled={submitting}
+                              autoFocus
+                              className="flex-1"
+                            />
+                            <div className="flex gap-3">
+                              <CheckOutlined
+                                className="cursor-pointer hover:scale-125 transition-all text-lg "
+                                onClick={handleEditConfirm}
+                              />
+                              <CloseOutlined
+                                className="cursor-pointer hover:scale-125 transition-all text-lg"
+                                onClick={handleEditCancel}
+                              />
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <p className="font-medium flex-1">{duty.name}</p>
+                            <div className="flex gap-5">
+                              <EditOutlined
+                                className="cursor-pointer hover:scale-125 transition-all text-lg"
+                                onClick={() =>
+                                  handleEditStart(duty.id, duty.name)
+                                }
+                              />
+                              <DeleteOutlined
+                                className="cursor-pointer hover:scale-125 transition-all text-lg"
+                                onClick={() => handleDeleteDuty(duty.id)}
+                              />
+                            </div>
+                          </>
+                        )}
                       </div>
                     </li>
                   ))}
@@ -94,16 +154,12 @@ function App() {
           id="create-duty"
           className="bg-white p-6 rounded-xl shadow-sm border border-slate-100"
         >
-          <Button type="primary" onClick={() => setEditingId(ADD_DIALOG_ID)}>
+          <Button type="primary" onClick={() => setShowAddDialog(true)}>
             Add
           </Button>
           <AddDutyDialog
-            id={
-              editingId && editingId !== ADD_DIALOG_ID ? editingId : undefined
-            }
-            open={editingId !== null}
-            name={editingDuty?.name ?? ""}
-            onClose={() => setEditingId(null)}
+            open={showAddDialog}
+            onClose={() => setShowAddDialog(false)}
             onCreated={refetch}
           />
         </div>

@@ -1,23 +1,20 @@
 import { Form, Input, Modal, message } from "antd";
 import { useEffect, useState } from "react";
-import { createDuty, editDuty } from "../apis/hub";
+import { createDuty } from "../apis/hub";
 
 type Props = {
-  id?: string;
-  name?: string;
   open: boolean;
   onClose: () => void;
   onCreated: () => Promise<void>;
 };
-function AddDutyDialog({ id, name, open, onClose, onCreated }: Props) {
+function AddDutyDialog({ open, onClose, onCreated }: Props) {
   const [form] = Form.useForm<{ name: string }>();
   const [submitting, setSubmitting] = useState(false);
   const handleFinish = async (values: { name: string }) => {
     setSubmitting(true);
     try {
-      if (id) await editDuty(id, values.name);
-      else await createDuty(values.name);
-      message.success(id ? "Duty updated" : "Duty added");
+      await createDuty(values.name);
+      message.success("Duty added");
       form.resetFields();
       onClose();
       await onCreated();
@@ -29,17 +26,20 @@ function AddDutyDialog({ id, name, open, onClose, onCreated }: Props) {
   };
   useEffect(() => {
     if (open) {
-      form.setFieldsValue({ name: name ?? "" });
+      form.resetFields();
     }
-  }, [open, name, form]);
+  }, [open, form]);
   return (
     <Modal
-      title={id ? "Edit Duty" : "Add Duty"}
+      title="Add Duty"
       open={open}
       onCancel={onClose}
-      okText={id ? "Save" : "Add"}
+      okText="Add"
       confirmLoading={submitting}
       onOk={() => form.submit()}
+      centered
+      maskClosable={false}
+      width={400}
     >
       <Form form={form} onFinish={handleFinish}>
         <Form.Item
