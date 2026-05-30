@@ -54,10 +54,10 @@ React, Express, and PostgreSQL.
 6. **Test the application **
    ```bash
    cd frontend
-   pnpm jest
+   pnpm test
    ------------
    cd backend
-   pnpm jest
+   pnpm test
    ------------
    cd todo-management
    pnpm test :run both test together
@@ -65,5 +65,6 @@ React, Express, and PostgreSQL.
 
 ## Access
 
-- Frontend: http://localhost:5173
+- Frontend: http://localhost:5173(dev)
+- Frontend: http://localhost:4173(prod)
 - Backend baseUrl: http://localhost:4001/v1
