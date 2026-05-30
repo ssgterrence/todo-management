@@ -68,3 +68,13 @@ React, Express, and PostgreSQL.
 - Frontend: http://localhost:5173(dev)
 - Frontend: http://localhost:4173(prod)
 - Backend baseUrl: http://localhost:4001/v1
+- Health Check: http://localhost:4001/v1/health
+
+## Health Check
+
+The backend includes a health check endpoint that monitors database connectivity:
+
+**GET `/v1/health`**
+
+- Returns `200` with `{"status": "ok"}` when database is connected
+- Returns `503` with error details when database connection fails
