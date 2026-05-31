@@ -3,6 +3,8 @@
 Tech stacks:
 React, Express, and PostgreSQL.
 
+![Duties-task-Ui-overview](./assets/duties-task-overview.png)
+
 ## Prerequisites
 
 - Node.js (v18+)
