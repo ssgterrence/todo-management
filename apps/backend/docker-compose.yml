@@ -2,7 +2,7 @@ services:
   db:
     image: postgres:17
     container_name: duties-db
-    restart: "no"
+    restart: always
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
